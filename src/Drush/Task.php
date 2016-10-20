@@ -1,109 +1,137 @@
 <?php
 
-/**
- * @file
- * Contains \Drush\Task
- */
-
-
 namespace Drush;
 
 use PhingFile;
 
 /**
- * Phin task to execute a Drush command.
+ * Phing task to execute a Drush command.
  */
 class Task extends \Task {
 
   /**
-   * @var string The executed Drush command.
+   * The executed Drush command.
+   *
+   * @var string
    */
   protected $command = NULL;
 
   /**
-   * @var string Path the the Drush binary.
+   * Path to the Drush binary.
+   *
+   * @var string
    */
   protected $bin = NULL;
 
   /**
-   * @var string URI of the Drupal site to use.
+   * URI of the Drupal site to use.
+   *
+   * @var string
    */
   protected $uri = NULL;
 
   /**
-   * @var string Drupal root directory to use.
+   * Drupal root directory to use.
+   *
+   * @var string
    */
   protected $root = NULL;
 
   /**
-   * @var bool If set, assume 'yes' or 'no' as answer to all prompts.
+   * If set assume yes or no as answer to all prompts.
+   *
+   * @var bool
    */
   protected $assume = NULL;
 
   /**
-   * @var bool If true, simulate all relevant actions.
+   * If true simulate all relevant actions.
+   *
+   * @var bool
    */
   protected $simulate = FALSE;
 
   /**
-   * @var bool Use the pipe option.
+   * Use the pipe option.
+   *
+   * @var bool
    */
   protected $pipe = FALSE;
 
   /**
-   * @var array An array of Option.
+   * An array of options.
+   *
+   * @var Option[]
    */
   protected $options = array();
   /**
-   * @var array Am array of Param.
+   * An array of parameters.
+   *
+   * @var Param[]
    */
   protected $params = array();
 
   /**
-   * @var string The 'glue' characters used between each line of the returned
-   *   output.
+   * The glue characters used between each line of the returned output.
+   *
+   * @var string
    */
   protected $returnGlue = "\n";
 
   /**
-   * @var string The name of a Phing property to assign the Drush command's
-   *   output to.
+   * The name of a Phing property to assign the Drush commands output to.
+   *
+   * @var string
    */
   protected $returnProperty = NULL;
 
   /**
-   * @var bool Display extra information avout the command.
+   * Display extra information about the command.
+   *
+   * @var bool
    */
   protected $verbose = FALSE;
 
   /**
-   * @var bool Should the build fail on Drush errors
+   * Should the build fail on Drush errors.
+   *
+   * @var bool
    */
   protected $haltOnError = TRUE;
 
   /**
-   * @var string The alias of the Drupal site to use.
+   * The alias of the Drupal site to use.
+   *
+   * @var string
    */
   protected $alias = NULL;
 
   /**
-   * @var string Path to an additional config file to load.
+   * Path to an additional config file to load.
+   *
+   * @var string
    */
   protected $config = NULL;
 
   /**
-   * @var string Specifies the list of paths where drush will search for alias
+   * Specifies the list of paths where drush will search for alias.
+   *
+   * @var string
    *   files.
    */
   protected $aliasPath = NULL;
 
   /**
-   * @var bool Whether or not to use color output.
+   * Whether or not to use colored output.
+   *
+   * @var bool
    */
   protected $color = FALSE;
 
   /**
-   * @var PhingFile Working directory.
+   * Phing file Working directory.
+   *
+   * @var string
    */
   protected $dir;
 
@@ -281,9 +309,8 @@ class Task extends \Task {
   /**
    * Specify the working directory for executing this command.
    *
-   * @param PhingFile $dir Working directory
-   *
-   * @return void
+   * @param PhingFile $dir
+   *   Working directory.
    */
   public function setDir(PhingFile $dir) {
     $this->dir = $dir;
@@ -320,7 +347,6 @@ class Task extends \Task {
       $option->setName('nocolor');
       $this->options[] = $option;
     }
-
 
     if (!empty($this->root)) {
       $option = new Option();
@@ -381,7 +407,7 @@ class Task extends \Task {
     $command[] = $this->command;
 
     foreach ($this->params as $param) {
-      $command[] = '"' . escapeshellcmd($param->getValue()) . '"';
+      $command[] = $param->toString();
     }
 
     $command = implode(' ', $command);
@@ -392,7 +418,7 @@ class Task extends \Task {
     }
 
     // Execute Drush.
-    $this->log("Executing '$command'...");
+    $this->log('Executing: ' . $command);
     $output = array();
     exec($command, $output, $return);
 
@@ -410,10 +436,9 @@ class Task extends \Task {
     }
     // Build fail.
     if ($this->haltOnError && $return != 0) {
-      throw new \BuildException("Drush exited with code $return");
+      throw new \BuildException('Drush exited with code ' . $return);
     }
     return $return != 0;
   }
 
 }
-

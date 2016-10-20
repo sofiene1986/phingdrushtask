@@ -5,16 +5,24 @@
   "type": "library",
   "license": "GPL-2.0+",
   "support": {
-    "issues": "https://www.drupal.org/project/issues/phingdrushtask"
+    "issues": "https://www.drupal.org/project/issues/phingdrushtask",
+    "source": "http://cgit.drupalcode.org/phingdrushtask/"
   },
   "authors": [
     {
-      "name": "Frederic Dewinne",
-      "email": "frederic@continuousphp.com"
+      "name": "Pierre Buyle",
+      "email": "pierre@buyle.org",
+      "role": "Author"
     },
     {
-      "name": "Pierre Buyle",
-      "email": "pierre@buyle.org"
+      "name": "Frederic Dewinne",
+      "email": "frederic@continuousphp.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Pol Dellaiera",
+      "email": "pol.dellaiera@protonmail.com",
+      "role": "Developer"
     }
   ],
   "require": {
