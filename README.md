@@ -30,7 +30,7 @@ The drush command for installing Drupal:
   </drush> 
 ```
 
-You may also use the attributes `escape` and/or `quote` in the **<param>** tag.
+You may also use the attributes `escape` and/or `quote` in the ```<param>``` tag.
 
 ```xml
 <!-- You can set some parameters from phing properties as well. -->
