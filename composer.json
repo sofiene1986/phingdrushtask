@@ -6,7 +6,7 @@
   "license": "GPL-2.0+",
   "support": {
     "issues": "https://www.drupal.org/project/issues/phingdrushtask",
-    "source": "http://cgit.drupalcode.org/phingdrushtask/"
+    "source": "https://github.com/drupol/phingdrushtask"
   },
   "authors": [
     {
