@@ -1,7 +1,7 @@
 {
   "name":     "drupol/phingdrushtask",
   "homepage": "https://www.drupal.org/project/phingdrushtask",
-  "description": "Drush task for Phing",
+  "description": "Drush task for Phing.",
   "type": "library",
   "license": "GPL-2.0+",
   "support": {
