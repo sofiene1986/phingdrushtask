@@ -19,7 +19,7 @@ or by editing your composer.json file and add in the right section:
   "require": {
     "drupal/phingdrushtask": "8.x-dev"
   },
-  "repositories": {
+  "repositories": [
     {
       "type": "vcs",
       "url": "https://git.drupal.org/project/phingdrushtask.git"
@@ -28,7 +28,7 @@ or by editing your composer.json file and add in the right section:
       "type": "composer",
       "url": "https://packages.drupal.org/8"
     }
-  }
+  ]
 }
 ```
 
