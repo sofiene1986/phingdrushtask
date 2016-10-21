@@ -17,16 +17,12 @@ or by editing your composer.json file and add in the right section:
 ```json
 {
   "require": {
-    "drupal/phingdrushtask": "8.x-dev"
+    "drupal/phingdrushtask": "1.0.3"
   },
   "repositories": [
     {
       "type": "vcs",
       "url": "https://git.drupal.org/project/phingdrushtask.git"
-    },
-    {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
     }
   ]
 }
