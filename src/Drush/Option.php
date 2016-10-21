@@ -11,6 +11,7 @@ class Option {
    * The option's name.
    *
    * @var string
+   *   The option's name.
    */
   protected $name;
 
@@ -18,6 +19,7 @@ class Option {
    * The option's value.
    *
    * @var string
+   *   The option's value.
    */
   protected $value;
 
@@ -72,18 +74,20 @@ class Option {
   }
 
   /**
-   * Get the string.
+   * Get the a representation of the option.
    *
    * @return string
    *   The option as a string.
    */
   public function toString() {
-    $name  = $this->getName();
+    $name = $this->getName();
     $value = $this->getValue();
-    $str = '--' . $name;
-    if (!empty($value)) {
-      $str .= '="' . escapeshellcmd($value) . '"';
+    $str = sprintf('--%s', $name);
+
+    if (isset($value) && $value != '') {
+      $str = sprintf('%s="%s"', $str, escapeshellcmd($value));
     }
+
     return $str;
   }
 

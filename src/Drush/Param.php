@@ -5,7 +5,7 @@ namespace Drush;
 /**
  * Class Param. Represents a Drush CLI parameter.
  */
-class Param {
+class Param extends \DataType {
 
   /**
    * The parameter's value.
@@ -19,27 +19,19 @@ class Param {
    *
    * @var bool
    */
-  protected $escape;
+  protected $escape = TRUE;
 
   /**
    * If TRUE, surround the value with quotes. Otherwise not. Default is TRUE.
    *
    * @var bool
    */
-  protected $quote;
-
-  /**
-   * DrushParam constructor.
-   */
-  public function __construct() {
-    $this->setEscape();
-    $this->setQuote();
-  }
+  protected $quote = TRUE;
 
   /**
    * Set the escape's param value.
    *
-   * @param string|bool $escape
+   * @param bool $escape
    *   The escape's param value.
    */
   public function setEscape($escape = TRUE) {
@@ -53,13 +45,13 @@ class Param {
    *   The escape's param value.
    */
   public function getEscape() {
-    return ($this->escape === 'yes' || $this->escape === 'true');
+    return $this->escape;
   }
 
   /**
    * Set the quote's param value.
    *
-   * @param string|bool $quote
+   * @param bool $quote
    *   The quote's param value.
    */
   public function setQuote($quote = TRUE) {
@@ -73,7 +65,17 @@ class Param {
    *   The quote's param value.
    */
   public function getQuote() {
-    return ($this->quote === 'yes' || $this->quote === 'true');
+    return $this->quote;
+  }
+
+  /**
+   * Set the parameter value from a text element.
+   *
+   * @param string $str
+   *   The value of the text element.
+   */
+  public function addText($str) {
+    $this->value = (string) $str;
   }
 
   /**
