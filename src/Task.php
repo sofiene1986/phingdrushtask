@@ -1,6 +1,6 @@
 <?php
 
-namespace Drush;
+namespace Phing\Task\Drush;
 
 use PhingFile;
 

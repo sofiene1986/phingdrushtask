@@ -30,8 +30,8 @@
     "drush/drush": "6.5 - 8.1"
   },
   "autoload": {
-    "psr-0": {
-      "Drush\\": "src/"
+    "psr-4": {
+      "Phing\Task\Drush\\": "src/"
     }
   }
 }

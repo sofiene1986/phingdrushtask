@@ -1,6 +1,6 @@
 <?php
 
-namespace Drush;
+namespace Phing\Task\Drush;
 
 /**
  * Class Param. Represents a Drush CLI parameter.
