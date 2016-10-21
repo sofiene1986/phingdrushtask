@@ -9,7 +9,7 @@ Phing provides tools for usual tasks for PHP projects (phplint, jslint, VCS chec
 Installation must be done through [Composer](https://getcomposer.org/):
 
 ```
-  composer require drupol/phingdrushtask
+  composer require drupal/phingdrushtask
 ```
 
 or by editing your composer.json file and add in the right section:
@@ -17,8 +17,17 @@ or by editing your composer.json file and add in the right section:
 ```json
 {
   "require": {
-    "drupol/phingdrushtask": "8.x-dev"
+    "drupal/phingdrushtask": "8.x-dev"
   }
+  "repositories": {
+    {
+      "type": "vcs",
+      "url": "https://git.drupal.org/project/phingdrushtask.git"
+    },
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }    
 }
 ```
 
