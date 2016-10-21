@@ -1,6 +1,6 @@
 <?php
 
-namespace Drush\Phing;
+namespace Phing\Drush;
 
 /**
  * Class Option. Represents a Drush CLI option.
