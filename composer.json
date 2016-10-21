@@ -32,6 +32,9 @@
   "autoload": {
     "psr-0": {
       "Drush\\": "src/"
+    },
+    "psr-4": {
+      "Drush\\": "src/"
     }
   }
 }
