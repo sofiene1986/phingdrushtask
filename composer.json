@@ -1,5 +1,5 @@
 {
-  "name":     "drupal/phingdrushtask",
+  "name":     "drupol/phingdrushtask",
   "homepage": "https://www.drupal.org/project/phingdrushtask",
   "description": "Drush task for Phing.",
   "type": "library",
