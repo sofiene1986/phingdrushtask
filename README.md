@@ -22,12 +22,31 @@ The drush command for installing Drupal:
 
 ... would be written in a Phing build file as:
 
-```
+```xml
   <drush command="site-install" assume="yes"">
     <option name="locale">uk</option>
     <option name="site-name" value="${sitename}" />
     <param>expert</param>
   </drush> 
+```
+
+You may also use the attributes `escape` and/or `quote` in the **<param>** tag.
+
+```xml
+<!-- You can set some parameters from phing properties as well. -->
+<propery name="drush.assume" value="yes"/>
+<propery name="drush.root" value="${website.drupal.dir}"/>
+
+<drush command="site-install">
+    <option name="db-url" value="${drupal.db.url}"/>
+    <option name="site-name" value="${website.site.name}"/>
+    <option name="account-name" value="${drupal.admin.username}"/>
+    <option name="account-pass" value="${drupal.admin.password}"/>
+    <option name="account-mail" value="${drupal.admin.email}"/>
+    <param>${website.profile.name}</param>
+    <!-- Disable sending of e-mails during installation. -->
+    <param escape="no" quote="yes">install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+</drush>
 ```
 
 More sample usages are provided in the template build script at [reload.github.io/phing-drupal-template](https://reload.github.io/phing-drupal-template/).

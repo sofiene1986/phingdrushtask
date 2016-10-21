@@ -352,7 +352,7 @@ class Task extends \Task {
     /**
      * The Drush binary command.
      */
-    $command[] = $this->bin;
+    $command[] = $this->bin->getAbsolutePath();
 
     /**
      * The site alias.
