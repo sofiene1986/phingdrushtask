@@ -4,11 +4,30 @@ A Drush task for [Phing](http://www.phing.info/). This task enable usage of Drus
 
 Phing provides tools for usual tasks for PHP projects (phplint, jslint, VCS checkouts, files copy or merge, packaging, upload, etc.). Integration of Drush in Phing is particularly useful when building and testing Drupal projects in a continuous integration server such as [Jenkins](http://jenkins-ci.org/), [Travis](https://travis-ci.org/) or [Continuous PHP](https://continuousphp.com/).
  
-## Installation and Usage
+## Installation
+
+Installation must be done through [Composer](https://getcomposer.org/):
+
+```
+  composer require drupol/phingdrushtask
+```
+
+or by editing your composer.json file and add in the right section:
+
+```json
+{
+  "require": {
+    "drupol/phingdrushtask": "8.x-dev"
+  }
+}
+```
+
+
+## Usage
 
 To use the Drush task in your build file,  it must be made available to Phing so that the buildfile parser is aware a correlating XML element and it's parameters. This is done by adding a `<taskdef>` task to your build file:
 
-```
+```xml
   <taskdef name="drush" classname="\Phing\Drush\Task" />
 ```
 
