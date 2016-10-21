@@ -17,7 +17,7 @@ or by editing your composer.json file and add in the right section:
 ```json
 {
   "require": {
-    "drupal/phingdrushtask": "8.x-dev"
+    "drupal/phingdrushtask": "1.0.0"
   },
   "repositories": [
     {
