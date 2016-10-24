@@ -136,6 +136,22 @@ class Task extends \Task {
   protected $params = array();
 
   /**
+   * If spawn is set then [unix] programs will redirect stdout and add '&'.
+   * @var boolean
+   */
+  protected $spawn = false;
+
+  /**
+   * Whether to suppress all output and run in the background.
+   *
+   * @param boolean $spawn
+   *   If the command is to be run in the background
+   */
+  public function setSpawn($spawn) {
+    $this->spawn = (bool) $spawn;
+  }
+
+  /**
    * The Drush command to run.
    *
    * @param string $command
@@ -436,6 +452,12 @@ class Task extends \Task {
      */
     foreach ($this->params as $param) {
       $command[] = $param->toString();
+    }
+
+    // we ignore the spawn boolean for windows
+    if ($this->spawn) {
+      $command[] = '1>/dev/null';
+      $command[] = '&';
     }
 
     $command = implode(' ', $command);
