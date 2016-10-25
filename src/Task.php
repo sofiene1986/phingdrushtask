@@ -456,7 +456,7 @@ class Task extends \Task {
 
     // we ignore the spawn boolean for windows
     if ($this->spawn) {
-      $command[] = '>/dev/null 2>&1';
+      $command[] = '&> /dev/null';
       $command[] = '&';
     }
 
