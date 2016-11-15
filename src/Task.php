@@ -7,7 +7,7 @@ use PhingFile;
 /**
  * Phing task to execute a Drush command.
  */
-class Task extends \Task {
+class Task extends \ExecTask {
 
   /**
    * The command to execute.
@@ -57,20 +57,6 @@ class Task extends \Task {
    * @var bool
    */
   protected $pipe = FALSE;
-
-  /**
-   * The 'glue' characters used between each line of the returned output.
-   *
-   * @var string
-   */
-  protected $returnGlue = "\n";
-
-  /**
-   * The name of a Phing property to assign the Drush command's output to.
-   *
-   * @var string
-   */
-  protected $returnProperty = NULL;
 
   /**
    * Display extra information about the command.
@@ -134,22 +120,6 @@ class Task extends \Task {
    * @var Param[]
    */
   protected $params = array();
-
-  /**
-   * If spawn is set then [unix] programs will redirect stdout and add '&'.
-   * @var boolean
-   */
-  protected $spawn = false;
-
-  /**
-   * Whether to suppress all output and run in the background.
-   *
-   * @param boolean $spawn
-   *   If the command is to be run in the background
-   */
-  public function setSpawn($spawn) {
-    $this->spawn = (bool) $spawn;
-  }
 
   /**
    * The Drush command to run.
@@ -454,44 +424,9 @@ class Task extends \Task {
       $command[] = $param->toString();
     }
 
-    // we ignore the spawn boolean for windows
-    if ($this->spawn) {
-      $command[] = '&> /dev/null';
-      $command[] = '&';
-    }
+    $this->command = implode(' ', $command);
 
-    $command = implode(' ', $command);
-
-    if ($this->dir !== NULL) {
-      $currdir = getcwd();
-      @chdir($this->dir->getPath());
-    }
-
-    // Execute Drush.
-    $this->log("Executing: " . $command);
-    $output = array();
-    exec($command, $output, $return);
-
-    if (isset($currdir)) {
-      @chdir($currdir);
-    }
-
-    // Collect Drush output for display through Phing's log.
-    foreach ($output as $line) {
-      $this->log($line);
-    }
-
-    // Set value of the 'pipe' property.
-    if (!empty($this->returnProperty)) {
-      $this->getProject()->setProperty($this->returnProperty, implode($this->returnGlue, $output));
-    }
-
-    // When build failed.
-    if ($this->haltOnError && $return != 0) {
-      throw new \BuildException("Drush exited with code: " . $return);
-    }
-
-    return $return != 0;
+    parent::main();
   }
 
 }

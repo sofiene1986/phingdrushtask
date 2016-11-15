@@ -31,10 +31,18 @@ or by editing your composer.json file and add in the right section:
 
 ## Usage
 
-To use the Drush task in your build file,  it must be made available to Phing so that the buildfile parser is aware a correlating XML element and it's parameters. This is done by adding a `<taskdef>` task to your build file:
+To use the Drush task in your build file,  it must be made available to Phing so that the buildfile parser is aware a correlating XML element and it's parameters.
+
+This is done by adding a `<taskdef>` task to your build file:
 
 ```xml
   <taskdef name="drush" classname="\Phing\Drush\Task" />
+```
+
+or by importing the ```import.xml``` file: 
+
+```xml
+  <import file="vendor/drupal/phingdrushtask/import.xml"/>
 ```
 
 See the [Phing documentation](http://www.phing.info/docs/guide/stable/chapters/appendixes/AppendixB-CoreTasks.html#TaskdefTask) for more information on the `<taskdef>` task.
@@ -86,3 +94,7 @@ It's also possible to add the attributes `escape` and/or `quote` in the ```<para
 ```
 
 More sample usages are provided in the template build script at [reload.github.io/phing-drupal-template](https://reload.github.io/phing-drupal-template/).
+
+As the Phing Drush Task extends the Phing ExecTask, you are able to use all the options of that command.
+
+Have a look at [the ExecTask documentation](https://www.phing.info/docs/guide/trunk/ExecTask.html) for the complete list of options.
