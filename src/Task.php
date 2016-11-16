@@ -10,13 +10,6 @@ use PhingFile;
 class Task extends \ExecTask {
 
   /**
-   * The command to execute.
-   *
-   * @var string
-   */
-  protected $command = NULL;
-
-  /**
    * Path the the Drush binary.
    *
    * @var PhingFile
@@ -94,6 +87,14 @@ class Task extends \ExecTask {
   protected $aliasPath = NULL;
 
   /**
+   * Given Drush command.
+   *
+   * @var string
+   *   The Drush command.
+   */
+  protected $phingCommand;
+
+  /**
    * Whether or not to use colored output.
    *
    * @var bool
@@ -128,7 +129,8 @@ class Task extends \ExecTask {
    *   The Drush command's name.
    */
   public function setCommand($command) {
-    $this->command = $command;
+    //$this->command = $command;
+    $this->phingCommand = $command;
   }
 
   /**
@@ -139,6 +141,7 @@ class Task extends \ExecTask {
    */
   public function setBin(PhingFile $bin) {
     $this->bin = $bin;
+    $this->setExecutable($bin);
   }
 
   /**
@@ -314,7 +317,7 @@ class Task extends \ExecTask {
    *   The created parameter.
    */
   public function createParam() {
-    $num = array_push($this->params, new Param());
+    $num = array_push($this->params, new Param($this->commandline));
     return $this->params[$num - 1];
   }
 
@@ -338,7 +341,7 @@ class Task extends \ExecTask {
     /**
      * The Drush binary command.
      */
-    $command[] = $this->bin->getAbsolutePath();
+    $this->commandline->setExecutable($this->bin);
 
     /**
      * The site alias.
@@ -415,7 +418,9 @@ class Task extends \ExecTask {
     /**
      * The Drush command to run.
      */
-    $command[] = $this->command;
+    if ($this->phingCommand) {
+      $command[] = $this->phingCommand;
+    }
 
     /**
      * The parameters.
@@ -424,8 +429,7 @@ class Task extends \ExecTask {
       $command[] = $param->toString();
     }
 
-    $this->command = implode(' ', $command);
-
+    $this->commandline->addArguments($command);
     parent::main();
   }
 
