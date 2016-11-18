@@ -40,7 +40,7 @@ class DrushTest extends TestCase {
     ob_end_clean();
     \Phing::shutdown();
 
-    $this->assertContains($result, $content);
+    $this->assertContains("Executing command: " . $result, $content);
     unlink($file);
   }
 
@@ -53,27 +53,46 @@ class DrushTest extends TestCase {
   public function commandsProvider() {
     return array(
       array(
+        'command' => '<drush/>',
+        'result' => 'drush',
+      ),
+      array(
         'command' => '<drush druplicon="yes"/>',
         'result' => 'drush --druplicon',
       ),
       array(
-        'command' => '<drush command="make" simulate="yes" assume="yes"/>',
-        'result' => 'drush --simulate --yes make',
+        'command' => '<drush command="status" simulate="yes" assume="yes"/>',
+        'result' => 'drush --simulate --yes status',
       ),
       array(
         'command' => '<drush assume="yes" command="make"><option name="simulate"/></drush>',
         'result' => 'drush --simulate --yes make',
       ),
       array(
+        'command' => '<drush bin="/whos/your/brogy/drush" command="status" assume="yes"/>',
+        'result' => '/whos/your/brogy/drush --yes status',
+      ),
+      array(
         'command' => '<drush command="make" assume="yes"
                verbose="no"
                color="no"
+               simulate="yes"
                root="/somewhere/over/the/rainbow">
             <option name="no-patch-txt"></option>
             <param>/way/up/high.make.yml</param>
             <param>/And/the/dreams/that/you/dreamed/of</param>
         </drush>',
-        'result' => 'drush --no-patch-txt --nocolor --root="/somewhere/over/the/rainbow" --yes make /way/up/high.make.yml /And/the/dreams/that/you/dreamed/of 2>&1',
+        'result' => 'drush --no-patch-txt --nocolor --root="/somewhere/over/the/rainbow" --simulate --yes make /way/up/high.make.yml /And/the/dreams/that/you/dreamed/of',
+      ),
+      array(
+        'command' => '<drush command="status" assume="yes"
+               simulate="yes"
+               root="/somewhere/over/the/rainbow">
+            <option name="no-patch-txt"></option>
+            <param quote="yes">/way/up/high.make.yml</param>
+            <param escape="yes">/And/the/dreams/that/you/dreamed/of;I\'m Broggy and I know it.</param>
+        </drush>',
+        'result' => 'drush --no-patch-txt --root="/somewhere/over/the/rainbow" --simulate --yes status "/way/up/high.make.yml" /And/the/dreams/that/you/dreamed/of\;I\\\'m Broggy and I know it.',
       ),
     );
   }
