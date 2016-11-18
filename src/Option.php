@@ -5,7 +5,7 @@ namespace Phing\Drush;
 /**
  * Class Option. Represents a Drush CLI option.
  */
-class Option {
+class Option extends \DataType {
 
   /**
    * The option's name.
@@ -28,9 +28,25 @@ class Option {
    *
    * @param string $str
    *   The option's name.
+   *
+   * @return self
    */
   public function setName($str) {
     $this->name = (string) $str;
+    return $this;
+  }
+
+  /**
+   * Set the option's value.
+   *
+   * @param string $str
+   *   The option's value.
+   *
+   * @return self
+   */
+  public function setValue($str) {
+    $this->value = $str;
+    return $this;
   }
 
   /**
@@ -44,23 +60,16 @@ class Option {
   }
 
   /**
-   * Set the option's value.
-   *
-   * @param string $str
-   *   The option's value.
-   */
-  public function setValue($str) {
-    $this->value = $str;
-  }
-
-  /**
    * Set the option's value from a text element.
    *
    * @param string $str
    *   The value of the text element.
+   *
+   * @return self
    */
   public function addText($str) {
     $this->value = (string) $str;
+    return $this;
   }
 
   /**
@@ -69,7 +78,7 @@ class Option {
    * @return string
    *   The option's value.
    */
-  public function getValue() {
+  public function getText() {
     return $this->value;
   }
 
@@ -81,7 +90,7 @@ class Option {
    */
   public function toString() {
     $name = $this->getName();
-    $value = $this->getValue();
+    $value = $this->getText();
     $str = sprintf('--%s', $name);
 
     if (isset($value) && $value != '') {

@@ -5,7 +5,7 @@ namespace Phing\Drush;
 /**
  * Class Param. Represents a Drush CLI parameter.
  */
-class Param extends \CommandlineArgument {
+class Param extends \DataType {
 
   /**
    * The parameter's value.
@@ -14,6 +14,59 @@ class Param extends \CommandlineArgument {
    */
   protected $value;
 
+  /**
+   * If TRUE, escape the value. Otherwise not. Default is TRUE.
+   *
+   * @var bool
+   */
+  protected $escape = FALSE;
+
+  /**
+   * If TRUE, surround the value with quotes. Otherwise not. Default is TRUE.
+   *
+   * @var bool
+   */
+  protected $quote = FALSE;
+
+  /**
+   * Set the escape's param value.
+   *
+   * @param bool $escape
+   *   The escape's param value.
+   */
+  public function setEscape($escape) {
+    $this->escape = $escape;
+  }
+
+  /**
+   * Get the escape's param value.
+   *
+   * @return bool
+   *   The escape's param value.
+   */
+  public function getEscape() {
+    return $this->escape;
+  }
+
+  /**
+   * Set the quote's param value.
+   *
+   * @param bool $quote
+   *   The quote's param value.
+   */
+  public function setQuote($quote) {
+    $this->quote = $quote;
+  }
+
+  /**
+   * Get the quote's param value.
+   *
+   * @return bool
+   *   The quote's param value.
+   */
+  public function getQuote() {
+    return $this->quote;
+  }
 
   /**
    * Set the parameter value from a text element.
@@ -43,6 +96,14 @@ class Param extends \CommandlineArgument {
    */
   public function toString() {
     $value = $this->getValue();
+
+    if ($this->getEscape()) {
+      $value = escapeshellcmd($value);
+    }
+
+    if ($this->getQuote()) {
+      $value = '"' . $value . '"';
+    }
 
     return $value;
   }
