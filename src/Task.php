@@ -112,14 +112,14 @@ class Task extends \ExecTask {
    *
    * @var Option[]
    */
-  protected $_options = array();
+  protected $options = array();
 
   /**
    * An array of Param.
    *
    * @var Param[]
    */
-  protected $_params = array();
+  protected $params = array();
 
   /**
    * Task constructor.
@@ -147,8 +147,8 @@ class Task extends \ExecTask {
    */
   public function setAliasPath($aliasPath) {
     $this->createOption()
-      ->setName('aliaspath')
-      ->addText($aliasPath);
+            ->setName('aliaspath')
+            ->addText($aliasPath);
   }
 
   /**
@@ -186,8 +186,8 @@ class Task extends \ExecTask {
    */
   public function setBackupLocation(PhingFile $directory) {
     $this->createOption()
-      ->setName('backup-location')
-      ->addText($directory->getAbsolutePath());
+            ->setName('backup-location')
+            ->addText($directory->getAbsolutePath());
   }
 
   /**
@@ -210,7 +210,7 @@ class Task extends \ExecTask {
   public function setColor($yesNo) {
     if (!$yesNo) {
       $this->createOption()
-        ->setName('nocolor');
+                ->setName('nocolor');
     }
   }
 
@@ -222,8 +222,8 @@ class Task extends \ExecTask {
    */
   public function setConfig(PhingFile $config) {
     $this->createOption()
-      ->setName('config')
-      ->addText($config->getAbsolutePath());
+            ->setName('config')
+            ->addText($config->getAbsolutePath());
   }
 
   /**
@@ -240,6 +240,7 @@ class Task extends \ExecTask {
    * Display even more information, including internal messages.
    *
    * @param bool $yesNo
+   *   The value.
    */
   public function setDebug($yesNo) {
     if ($yesNo) {
@@ -256,7 +257,7 @@ class Task extends \ExecTask {
   public function setDruplicon($yesNo) {
     if ($yesNo) {
       $this->createOption()
-        ->setName('druplicon');
+                ->setName('druplicon');
     }
   }
 
@@ -269,8 +270,8 @@ class Task extends \ExecTask {
   public function setHaltOnError($yesNo) {
     if ($yesNo) {
       $this->createOption()
-        ->setName('halt-on-error')
-        ->addText(\StringHelper::booleanValue($yesNo));
+                ->setName('halt-on-error')
+                ->addText(\StringHelper::booleanValue($yesNo));
     }
   }
 
@@ -294,13 +295,12 @@ class Task extends \ExecTask {
    */
   public function setRoot(PhingFile $root) {
     $this->createOption()
-      ->setName('root')
-      ->addText($root);
+            ->setName('root')
+            ->addText($root);
   }
 
   /**
-   * Show all functions names which could have been called for the current
-   * command. See drush_invoke().
+   * Show all functions names called for the current command.
    *
    * @param bool $yesNo
    *   The value.
@@ -308,8 +308,8 @@ class Task extends \ExecTask {
   public function setShowInvoke($yesNo) {
     if ($yesNo) {
       $this->createOption()
-        ->setName('show-invoke')
-        ->addText(\StringHelper::booleanValue($yesNo));
+                ->setName('show-invoke')
+                ->addText(\StringHelper::booleanValue($yesNo));
     }
   }
 
@@ -333,8 +333,8 @@ class Task extends \ExecTask {
    */
   public function setPipe($pipe) {
     $this->createOption()
-      ->setName('pipe')
-      ->addText($pipe);
+            ->setName('pipe')
+            ->addText($pipe);
   }
 
   /**
@@ -357,19 +357,20 @@ class Task extends \ExecTask {
    */
   public function setUri($uri) {
     $this->createOption()
-      ->setName('uri')
-      ->addText($uri);
+            ->setName('uri')
+            ->addText($uri);
   }
 
   /**
    * Specify a user to login with. May be a name or a number.
    *
    * @param string $user
+   *   The user name.
    */
   public function setUser($user) {
     $this->createOption()
-      ->setName('user')
-      ->addText($user);
+            ->setName('user')
+            ->addText($user);
   }
 
   /**
@@ -380,8 +381,8 @@ class Task extends \ExecTask {
    */
   public function setStrict($strict) {
     $this->createOption()
-      ->setName('strict')
-      ->addText($strict);
+            ->setName('strict')
+            ->addText($strict);
   }
 
   /**
@@ -414,10 +415,10 @@ class Task extends \ExecTask {
    * @param bool $yesNo
    *   The value.
    */
-  public function setXDebug($yesNo) {
+  public function setXdebug($yesNo) {
     if ($yesNo) {
       $this->createOption()
-        ->setName('xh');
+                ->setName('xh');
     }
   }
 
@@ -455,8 +456,8 @@ class Task extends \ExecTask {
    *   The created parameter.
    */
   public function createParam() {
-    $num = array_push($this->_params, new Param());
-    return $this->_params[$num - 1];
+    $num = array_push($this->params, new Param());
+    return $this->params[$num - 1];
   }
 
   /**
@@ -466,15 +467,15 @@ class Task extends \ExecTask {
    *   The created option.
    */
   public function createOption() {
-    $num = array_push($this->_options, new Option());
-    return $this->_options[$num - 1];
+    $num = array_push($this->options, new Option());
+    return $this->options[$num - 1];
   }
 
   /**
    * The main entry point method.
    */
   public function main() {
-    /**
+    /*
      * The Drush binary command.
      */
     if ($this->bin instanceof PhingFile) {
@@ -482,18 +483,18 @@ class Task extends \ExecTask {
     }
     $this->commandline->setExecutable($this->bin);
 
-    /**
+    /*
      * The site alias.
      */
     if ($this->alias) {
       $this->commandline->addArguments((array) $this->alias);
     }
 
-    /**
+    /*
      * The options.
      */
     $options = array();
-    foreach ($this->_options as $option) {
+    foreach ($this->options as $option) {
       // Trick to ensure no option duplicates.
       $options[$option->getName()] = $option->toString();
     }
@@ -501,11 +502,11 @@ class Task extends \ExecTask {
     asort($options);
     $this->commandline->addArguments(array_values($options));
 
-    /**
+    /*
      * The parameters.
      */
     $params = array();
-    foreach ($this->_params as $param) {
+    foreach ($this->params as $param) {
       $params[] = $param->toString();
     }
     $this->commandline->addArguments($params);
@@ -517,7 +518,7 @@ class Task extends \ExecTask {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   protected function buildCommand() {
     $this->realCommand = implode(' ', $this->commandline->getCommandline());

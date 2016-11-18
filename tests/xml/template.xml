@@ -2,6 +2,6 @@
     <import file="../../import.xml"/>
 
     <target name="test">
-        <drush druplicon="yes"/>
+        <drush/>
     </target>
 </project>

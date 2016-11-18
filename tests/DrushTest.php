@@ -1,0 +1,81 @@
+<?php
+
+namespace Phing\Drush\Tests;
+
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Class DrushTest.
+ *
+ * @package Phing\Drush\Tests
+ */
+class DrushTest extends TestCase {
+
+  /**
+   * Drush test.
+   *
+   * @dataProvider commandsProvider
+   */
+  public function testSmoke($command, $result) {
+    \Phing::setOutputStream(new \OutputStream(fopen('php://output', 'w')));
+    \Phing::setErrorStream(new \OutputStream(fopen('php://output', 'w')));
+
+    $file = __DIR__ . '/xml/test.xml';
+    $template = __DIR__ . '/xml/template.xml';
+    // Read the entire string.
+    $xml = file_get_contents($template);
+    // Replace something in the file string - this is a VERY simple example.
+    $str = str_replace('<drush/>', $command, $xml);
+    $str = str_replace('<drush', '<drush checkreturn="no" logoutput="no" passthru="no"', $str);
+    // Write the entire string.
+    file_put_contents($file, $str);
+
+    \Phing::startup();
+    $m = new \Phing();
+    $args = array('-f', realpath($file));
+    ob_start();
+    $m->execute($args);
+    $m->runBuild();
+    $content = ob_get_contents();
+    ob_end_clean();
+    \Phing::shutdown();
+
+    $this->assertContains($result, $content);
+    unlink($file);
+  }
+
+  /**
+   * Data provider.
+   *
+   * @return array
+   *    Test arguments.
+   */
+  public function commandsProvider() {
+    return array(
+      array(
+        'command' => '<drush druplicon="yes"/>',
+        'result' => 'drush --druplicon',
+      ),
+      array(
+        'command' => '<drush command="make" simulate="yes" assume="yes"/>',
+        'result' => 'drush --simulate --yes make',
+      ),
+      array(
+        'command' => '<drush assume="yes" command="make"><option name="simulate"/></drush>',
+        'result' => 'drush --simulate --yes make',
+      ),
+      array(
+        'command' => '<drush command="make" assume="yes"
+               verbose="no"
+               color="no"
+               root="/somewhere/over/the/rainbow">
+            <option name="no-patch-txt"></option>
+            <param>/way/up/high.make.yml</param>
+            <param>/And/the/dreams/that/you/dreamed/of</param>
+        </drush>',
+        'result' => 'drush --no-patch-txt --nocolor --root="/somewhere/over/the/rainbow" --yes make /way/up/high.make.yml /And/the/dreams/that/you/dreamed/of 2>&1',
+      ),
+    );
+  }
+
+}
