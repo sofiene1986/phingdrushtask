@@ -30,6 +30,7 @@ class Option extends \DataType {
    *   The option's name.
    *
    * @return self
+   *   Return itself.
    */
   public function setName($str) {
     $this->name = (string) $str;
@@ -43,6 +44,7 @@ class Option extends \DataType {
    *   The option's value.
    *
    * @return self
+   *   Return itself.
    */
   public function setValue($str) {
     $this->value = $str;
@@ -66,6 +68,7 @@ class Option extends \DataType {
    *   The value of the text element.
    *
    * @return self
+   *   Return itself.
    */
   public function addText($str) {
     $this->value = (string) $str;

@@ -160,7 +160,8 @@ class Task extends \ExecTask {
   public function setAssume($yesNo) {
     if ($yesNo) {
       $this->createOption()->setName('yes');
-    } else {
+    }
+    else {
       $this->createOption()->setName('no');
     }
   }
@@ -263,7 +264,7 @@ class Task extends \ExecTask {
    * Controls error handling of recoverable errors.
    *
    * @param bool $yesNo
-   *   The value
+   *   The value.
    */
   public function setHaltOnError($yesNo) {
     if ($yesNo) {
@@ -274,7 +275,7 @@ class Task extends \ExecTask {
   }
 
   /**
-   * Suppress non-error messages
+   * Suppress non-error messages.
    *
    * @param bool $yesNo
    *   The value.
@@ -302,7 +303,7 @@ class Task extends \ExecTask {
    * command. See drush_invoke().
    *
    * @param bool $yesNo
-   *   The value
+   *   The value.
    */
   public function setShowInvoke($yesNo) {
     if ($yesNo) {
@@ -411,7 +412,7 @@ class Task extends \ExecTask {
    * Enable profiling via XHProf.
    *
    * @param bool $yesNo
-   *   The value
+   *   The value.
    */
   public function setXDebug($yesNo) {
     if ($yesNo) {
@@ -521,7 +522,7 @@ class Task extends \ExecTask {
   protected function buildCommand() {
     $this->realCommand = implode(' ', $this->commandline->getCommandline());
 
-    if ($this->error !== null) {
+    if ($this->error !== NULL) {
       $this->realCommand .= ' 2> ' . escapeshellarg($this->error->getPath());
       $this->log(
         "Writing error output to: " . $this->error->getPath(),
@@ -529,13 +530,14 @@ class Task extends \ExecTask {
       );
     }
 
-    if ($this->output !== null) {
+    if ($this->output !== NULL) {
       $this->realCommand .= ' 1> ' . escapeshellarg($this->output->getPath());
       $this->log(
         "Writing standard output to: " . $this->output->getPath(),
         $this->logLevel
       );
-    } elseif ($this->spawn) {
+    }
+    elseif ($this->spawn) {
       $this->realCommand .= ' 1>/dev/null';
       $this->log("Sending output to /dev/null", $this->logLevel);
     }
@@ -543,12 +545,11 @@ class Task extends \ExecTask {
     // If neither output nor error are being written to file
     // then we'll redirect error to stdout so that we can dump
     // it to screen below.
-
-    if ($this->output === null && $this->error === null && $this->passthru === false) {
+    if ($this->output === NULL && $this->error === NULL && $this->passthru === FALSE) {
       $this->realCommand .= ' 2>&1';
     }
 
-    // we ignore the spawn boolean for windows
+    // We ignore the spawn boolean for windows.
     if ($this->spawn) {
       $this->realCommand .= ' &';
     }
