@@ -28,13 +28,13 @@
   ],
   "require": {
     "phing/phing": "~2.9",
-    "drush/drush": "6.5 - 8.1"
+    "drush/drush": "6 - 8"
   },
   "require-dev": {
-    "drupal/coder": "8.2.8",
-    "phpunit/phpunit": "5.5.*",
-    "mockery/mockery": "0.9.6",
-    "bovigo/assert": "~1.7"
+    "drupal/coder": "^8.2",
+    "phpunit/phpunit": "^5.6",
+    "mockery/mockery": "^0.9",
+    "bovigo/assert": "^1.7"
   },
   "scripts": {
     "post-install-cmd": [
