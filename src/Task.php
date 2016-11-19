@@ -595,7 +595,7 @@ class Task extends \ExecTask {
    *   The option if exists, an empty array otherwise.
    */
   private function optionExists($optionName) {
-    return array_filter($this->options, function($option) use ($optionName) {
+    return array_filter($this->options, function ($option) use ($optionName) {
       return $option->getName() == $optionName;
     });
   }
@@ -610,7 +610,7 @@ class Task extends \ExecTask {
    *   The option array without the option to remove.
    */
   private function optionRemove($optionName) {
-    $this->options = array_filter($this->options, function($option) use ($optionName) {
+    $this->options = array_filter($this->options, function ($option) use ($optionName) {
       return $option->getName() != $optionName;
     });
 
