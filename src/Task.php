@@ -458,7 +458,7 @@ class Task extends \ExecTask {
 
     foreach ($properties_mapping as $class_method => $drush_property) {
       if ($property = $this->getProject()->getProperty($drush_property)) {
-        call_user_func(array($this, $class_method), $this->getProject()->getProperty($drush_property));
+        call_user_func(array($this, $class_method), $property);
       }
     }
   }
