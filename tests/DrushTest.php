@@ -92,6 +92,13 @@ class DrushTest extends TestCase {
         </drush>',
         'result' => 'drush --root="/somewhere/over/the/rainbow" --simulate --yes status "/way/up/high.make.yml" /And/the/dreams/that/you/dreamed/of\;I\\\'m Broggy and I know it.',
       ),
+      array(
+        'command' => '<property name="drush.bin" value="/everyday/im/shuffling/drush"/><drush command="status" assume="yes"
+               simulate="yes"
+               root="/somewhere/over/the/rainbow">
+        </drush>',
+        'result' => '/everyday/im/shuffling/drush --root="/somewhere/over/the/rainbow" --simulate --yes status',
+      ),
     );
   }
 

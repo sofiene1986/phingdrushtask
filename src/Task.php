@@ -443,23 +443,22 @@ class Task extends \ExecTask {
   public function init() {
     // Get default properties from project.
     $properties_mapping = array(
-      'alias' => 'drush.alias',
-      'aliasPath' => 'drush.alias-path',
-      'assume' => 'drush.assume',
-      'bin' => 'drush.bin',
-      'color' => 'drush.color',
-      'config' => 'drush.config',
-      'pipe' => 'drush.pipe',
-      'root' => 'drush.root',
-      'simulate' => 'drush.simulate',
-      'uri' => 'drush.uri',
-      'verbose' => 'drush.verbose',
+      'setAlias' => 'drush.alias',
+      'setAliasPath' => 'drush.alias-path',
+      'setAssume' => 'drush.assume',
+      'setBin' => 'drush.bin',
+      'setColor' => 'drush.color',
+      'setConfig' => 'drush.config',
+      'setPipe' => 'drush.pipe',
+      'setRoot' => 'drush.root',
+      'setSimulate' => 'drush.simulate',
+      'setUri' => 'drush.uri',
+      'setVerbose' => 'drush.verbose',
     );
 
-    foreach ($properties_mapping as $class_property => $drush_property) {
-      if (!empty($this->getProject()->getProperty($drush_property))) {
-        // TODO: We should use a setter here.
-        $this->{$class_property} = $this->getProject()->getProperty($drush_property);
+    foreach ($properties_mapping as $class_method => $drush_property) {
+      if ($property = $this->getProject()->getProperty($drush_property)) {
+        call_user_func(array($this, $class_method), $this->getProject()->getProperty($drush_property));
       }
     }
   }
