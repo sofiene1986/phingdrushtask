@@ -40,7 +40,7 @@ class Task extends \ExecTask {
   /**
    * Whether to check the return code.
    *
-   * @var boolean
+   * @var bool
    */
   protected $checkreturn = TRUE;
 
@@ -68,7 +68,7 @@ class Task extends \ExecTask {
   /**
    * Whether to use PHP's passthru() function instead of exec().
    *
-   * @var boolean
+   * @var bool
    */
   protected $passthru = TRUE;
 
@@ -147,8 +147,8 @@ class Task extends \ExecTask {
    */
   public function setAliasPath($aliasPath) {
     $this->createOption()
-            ->setName('aliaspath')
-            ->addText($aliasPath);
+      ->setName('aliaspath')
+      ->addText($aliasPath);
   }
 
   /**
@@ -186,8 +186,8 @@ class Task extends \ExecTask {
    */
   public function setBackupLocation(PhingFile $directory) {
     $this->createOption()
-            ->setName('backup-location')
-            ->addText($directory->getAbsolutePath());
+      ->setName('backup-location')
+      ->addText($directory->getAbsolutePath());
   }
 
   /**
@@ -210,7 +210,7 @@ class Task extends \ExecTask {
   public function setColor($yesNo) {
     if (!$yesNo) {
       $this->createOption()
-                ->setName('nocolor');
+        ->setName('nocolor');
     }
   }
 
@@ -222,8 +222,8 @@ class Task extends \ExecTask {
    */
   public function setConfig(PhingFile $config) {
     $this->createOption()
-            ->setName('config')
-            ->addText($config->getAbsolutePath());
+      ->setName('config')
+      ->addText($config->getAbsolutePath());
   }
 
   /**
@@ -257,7 +257,7 @@ class Task extends \ExecTask {
   public function setDruplicon($yesNo) {
     if ($yesNo) {
       $this->createOption()
-                ->setName('druplicon');
+        ->setName('druplicon');
     }
   }
 
@@ -270,8 +270,8 @@ class Task extends \ExecTask {
   public function setHaltOnError($yesNo) {
     if ($yesNo) {
       $this->createOption()
-                ->setName('halt-on-error')
-                ->addText(\StringHelper::booleanValue($yesNo));
+        ->setName('halt-on-error')
+        ->addText(\StringHelper::booleanValue($yesNo));
     }
   }
 
@@ -295,8 +295,8 @@ class Task extends \ExecTask {
    */
   public function setRoot(PhingFile $root) {
     $this->createOption()
-            ->setName('root')
-            ->addText($root);
+      ->setName('root')
+      ->addText($root);
   }
 
   /**
@@ -308,8 +308,8 @@ class Task extends \ExecTask {
   public function setShowInvoke($yesNo) {
     if ($yesNo) {
       $this->createOption()
-                ->setName('show-invoke')
-                ->addText(\StringHelper::booleanValue($yesNo));
+        ->setName('show-invoke')
+        ->addText(\StringHelper::booleanValue($yesNo));
     }
   }
 
@@ -333,8 +333,8 @@ class Task extends \ExecTask {
    */
   public function setPipe($pipe) {
     $this->createOption()
-            ->setName('pipe')
-            ->addText($pipe);
+      ->setName('pipe')
+      ->addText($pipe);
   }
 
   /**
@@ -372,8 +372,8 @@ class Task extends \ExecTask {
    */
   public function setUri($uri) {
     $this->createOption()
-            ->setName('uri')
-            ->addText($uri);
+      ->setName('uri')
+      ->addText($uri);
   }
 
   /**
@@ -384,8 +384,8 @@ class Task extends \ExecTask {
    */
   public function setUser($user) {
     $this->createOption()
-            ->setName('user')
-            ->addText($user);
+      ->setName('user')
+      ->addText($user);
   }
 
   /**
@@ -396,8 +396,8 @@ class Task extends \ExecTask {
    */
   public function setStrict($strict) {
     $this->createOption()
-            ->setName('strict')
-            ->addText($strict);
+      ->setName('strict')
+      ->addText($strict);
   }
 
   /**
@@ -433,7 +433,7 @@ class Task extends \ExecTask {
   public function setXdebug($yesNo) {
     if ($yesNo) {
       $this->createOption()
-                ->setName('xh');
+        ->setName('xh');
     }
   }
 
