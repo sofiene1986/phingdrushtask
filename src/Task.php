@@ -193,12 +193,12 @@ class Task extends \ExecTask {
   /**
    * Path the Drush executable.
    *
-   * @param PhingFile $bin
+   * @param string $bin
    *   The path to the Drush executable.
    */
-  public function setBin(PhingFile $bin) {
-    $this->bin = $bin;
-    $this->setExecutable($bin);
+  public function setBin($bin) {
+    $this->bin = new PhingFile($bin);
+    $this->setExecutable($this->bin);
   }
 
   /**
