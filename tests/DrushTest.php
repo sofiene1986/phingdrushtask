@@ -40,7 +40,7 @@ class DrushTest extends TestCase {
     ob_end_clean();
     \Phing::shutdown();
 
-    $this->assertContains("Executing command: " . $result ." 2>&1\n", $content);
+    $this->assertContains("Executing command: " . $result . " 2>&1\n", $content);
     unlink($file);
   }
 
