@@ -592,6 +592,7 @@ class Task extends \ExecTask {
    *   The option name.
    *
    * @return array|\Phing\Drush\Option[]
+   *   The option if exists, an empty array otherwise.
    */
   private function optionExists($optionName) {
     return array_filter($this->options, function($option) use ($optionName) {
@@ -599,6 +600,15 @@ class Task extends \ExecTask {
     });
   }
 
+  /**
+   * Remove an option.
+   *
+   * @param string $optionName
+   *   The option name.
+   *
+   * @return \Phing\Drush\Option[]
+   *   The option array without the option to remove.
+   */
   private function optionRemove($optionName) {
     $this->options = array_filter($this->options, function($option) use ($optionName) {
       return $option->getName() != $optionName;
