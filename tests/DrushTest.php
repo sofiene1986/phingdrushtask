@@ -26,7 +26,7 @@ class DrushTest extends TestCase {
     $xml = file_get_contents($template);
     // Replace something in the file string - this is a VERY simple example.
     $str = str_replace('<drush/>', $command, $xml);
-    $str = str_replace('<drush', '<drush checkreturn="no" logoutput="no" passthru="no"', $str);
+    $str = str_replace('<drush', '<drush pretend="yes"', $str);
     // Write the entire string.
     file_put_contents($file, $str);
 
@@ -40,7 +40,7 @@ class DrushTest extends TestCase {
     ob_end_clean();
     \Phing::shutdown();
 
-    $this->assertContains("Executing command: " . $result, $content);
+    $this->assertContains("Executing command: " . $result ." 2>&1\n", $content);
     unlink($file);
   }
 
@@ -78,21 +78,19 @@ class DrushTest extends TestCase {
                color="no"
                simulate="yes"
                root="/somewhere/over/the/rainbow">
-            <option name="no-patch-txt"></option>
             <param>/way/up/high.make.yml</param>
             <param>/And/the/dreams/that/you/dreamed/of</param>
         </drush>',
-        'result' => 'drush --no-patch-txt --nocolor --root="/somewhere/over/the/rainbow" --simulate --yes make /way/up/high.make.yml /And/the/dreams/that/you/dreamed/of',
+        'result' => 'drush --nocolor --root="/somewhere/over/the/rainbow" --simulate --yes make /way/up/high.make.yml /And/the/dreams/that/you/dreamed/of',
       ),
       array(
         'command' => '<drush command="status" assume="yes"
                simulate="yes"
                root="/somewhere/over/the/rainbow">
-            <option name="no-patch-txt"></option>
             <param quote="yes">/way/up/high.make.yml</param>
             <param escape="yes">/And/the/dreams/that/you/dreamed/of;I\'m Broggy and I know it.</param>
         </drush>',
-        'result' => 'drush --no-patch-txt --root="/somewhere/over/the/rainbow" --simulate --yes status "/way/up/high.make.yml" /And/the/dreams/that/you/dreamed/of\;I\\\'m Broggy and I know it.',
+        'result' => 'drush --root="/somewhere/over/the/rainbow" --simulate --yes status "/way/up/high.make.yml" /And/the/dreams/that/you/dreamed/of\;I\\\'m Broggy and I know it.',
       ),
     );
   }

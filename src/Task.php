@@ -338,6 +338,21 @@ class Task extends \ExecTask {
   }
 
   /**
+   * This is not a real drush option. It's just used for tests.
+   *
+   * Display the command that would be runned only.
+   *
+   * @param bool $yesNo
+   *   The pretend option.
+   */
+  public function setPretend($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('pretend');
+    }
+  }
+
+  /**
    * Set the simulate option.
    *
    * @param bool $yesNo
@@ -494,6 +509,18 @@ class Task extends \ExecTask {
      * The options.
      */
     $options = array();
+
+    // This has been specifically made for tests.
+    // If the pretend option has been found, just display the drush command
+    // but never execute it.
+    $pretend = NULL;
+    if ($pretend = $this->optionExists('pretend')) {
+      $this->setLogoutput(FALSE);
+      $this->setPassthru(FALSE);
+      $this->setCheckreturn(FALSE);
+      $this->optionRemove('pretend');
+    }
+
     foreach ($this->options as $option) {
       // Trick to ensure no option duplicates.
       $options[$option->getName()] = $option->toString();
@@ -514,7 +541,9 @@ class Task extends \ExecTask {
     $this->buildCommand();
     $this->log('Executing command: ' . $this->realCommand);
 
-    parent::main();
+    if (!$pretend) {
+      parent::main();
+    }
   }
 
   /**
@@ -554,6 +583,28 @@ class Task extends \ExecTask {
     if ($this->spawn) {
       $this->realCommand .= ' &';
     }
+  }
+
+  /**
+   * Check if an option exists.
+   *
+   * @param string $optionName
+   *   The option name.
+   *
+   * @return array|\Phing\Drush\Option[]
+   */
+  private function optionExists($optionName) {
+    return array_filter($this->options, function($option) use ($optionName) {
+      return $option->getName() == $optionName;
+    });
+  }
+
+  private function optionRemove($optionName) {
+    $this->options = array_filter($this->options, function($option) use ($optionName) {
+      return $option->getName() != $optionName;
+    });
+
+    return $this->options;
   }
 
 }
