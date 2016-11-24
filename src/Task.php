@@ -407,7 +407,7 @@ class Task extends \ExecTask {
    *   The verbose option.
    */
   public function setVerbose($yesNo) {
-    if ($yesNo) {
+    if (\StringHelper::booleanValue($yesNo)) {
       $this->createOption()->setName('verbose');
     }
   }
