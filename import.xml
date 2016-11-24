@@ -1,0 +1,3 @@
+<project>
+    <taskdef name="drush" classname="\Phing\Drush\Task" />
+</project>

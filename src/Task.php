@@ -7,84 +7,7 @@ use PhingFile;
 /**
  * Phing task to execute a Drush command.
  */
-class Task extends \Task {
-
-  /**
-   * The command to execute.
-   *
-   * @var string
-   */
-  protected $command = NULL;
-
-  /**
-   * Path the the Drush binary.
-   *
-   * @var PhingFile
-   */
-  protected $bin = 'drush';
-
-  /**
-   * URI of the Drupal site to use.
-   *
-   * @var PhingFile
-   */
-  protected $uri = NULL;
-
-  /**
-   * Drupal root directory to use.
-   *
-   * @var PhingFile
-   */
-  protected $root = NULL;
-
-  /**
-   * If set, assume 'yes' or 'no' as answer to all prompts.
-   *
-   * @var bool
-   */
-  protected $assume = FALSE;
-
-  /**
-   * If true, simulate all relevant actions.
-   *
-   * @var bool
-   */
-  protected $simulate = FALSE;
-
-  /**
-   * Use the pipe option.
-   *
-   * @var bool
-   */
-  protected $pipe = FALSE;
-
-  /**
-   * The 'glue' characters used between each line of the returned output.
-   *
-   * @var string
-   */
-  protected $returnGlue = "\n";
-
-  /**
-   * The name of a Phing property to assign the Drush command's output to.
-   *
-   * @var string
-   */
-  protected $returnProperty = NULL;
-
-  /**
-   * Display extra information about the command.
-   *
-   * @var bool
-   */
-  protected $verbose = FALSE;
-
-  /**
-   * Should the build fail on Drush errors.
-   *
-   * @var bool
-   */
-  protected $haltOnError = TRUE;
+class Task extends \ExecTask {
 
   /**
    * The alias of the Drupal site to use.
@@ -94,18 +17,32 @@ class Task extends \Task {
   protected $alias = NULL;
 
   /**
-   * Path to an additional config file to load.
-   *
-   * @var string
-   */
-  protected $config = NULL;
-
-  /**
    * Specifies the list of paths where drush will search for alias files.
    *
    * @var string
    */
   protected $aliasPath = NULL;
+
+  /**
+   * If set, assume 'yes' or 'no' as answer to all prompts.
+   *
+   * @var bool
+   */
+  protected $assume = FALSE;
+
+  /**
+   * Path the the Drush binary.
+   *
+   * @var PhingFile
+   */
+  protected $bin = 'drush';
+
+  /**
+   * Whether to check the return code.
+   *
+   * @var bool
+   */
+  protected $checkreturn = TRUE;
 
   /**
    * Whether or not to use colored output.
@@ -115,11 +52,60 @@ class Task extends \Task {
   protected $color = FALSE;
 
   /**
+   * Path to an additional config file to load.
+   *
+   * @var string
+   */
+  protected $config = NULL;
+
+  /**
    * Working directory.
    *
    * @var PhingFile
    */
   protected $dir;
+
+  /**
+   * Whether to use PHP's passthru() function instead of exec().
+   *
+   * @var bool
+   */
+  protected $passthru = TRUE;
+
+  /**
+   * Use the pipe option.
+   *
+   * @var bool
+   */
+  protected $pipe = FALSE;
+
+  /**
+   * Drupal root directory to use.
+   *
+   * @var PhingFile
+   */
+  protected $root = NULL;
+
+  /**
+   * If true, simulate all relevant actions.
+   *
+   * @var bool
+   */
+  protected $simulate = FALSE;
+
+  /**
+   * URI of the Drupal site to use.
+   *
+   * @var PhingFile
+   */
+  protected $uri = NULL;
+
+  /**
+   * Display extra information about the command.
+   *
+   * @var bool
+   */
+  protected $verbose = FALSE;
 
   /**
    * An array of Option.
@@ -136,112 +122,11 @@ class Task extends \Task {
   protected $params = array();
 
   /**
-   * The Drush command to run.
-   *
-   * @param string $command
-   *   The Drush command's name.
+   * Task constructor.
    */
-  public function setCommand($command) {
-    $this->command = $command;
-  }
-
-  /**
-   * Path the Drush executable.
-   *
-   * @param PhingFile $bin
-   *   The path to the Drush executable.
-   */
-  public function setBin(PhingFile $bin) {
-    $this->bin = $bin;
-  }
-
-  /**
-   * Drupal root directory to use.
-   *
-   * @param PhingFile $root
-   *   The Drupal's root directory to use.
-   */
-  public function setRoot(PhingFile $root) {
-    $this->root = $root;
-  }
-
-  /**
-   * URI of the Drupal to use.
-   *
-   * @param string $uri
-   *   The URI of the Drupal site to use.
-   */
-  public function setUri($uri) {
-    $this->uri = $uri;
-  }
-
-  /**
-   * Set the assume option. 'yes' or 'no' to all prompts.
-   *
-   * @param string $assume
-   *   The assume option.
-   */
-  public function setAssume($assume) {
-    $this->assume = $assume;
-  }
-
-  /**
-   * Set the simulate option.
-   *
-   * @param string $simulate
-   *   The simulate option.
-   */
-  public function setSimulate($simulate) {
-    $this->simulate = $simulate;
-  }
-
-  /**
-   * Set the the pipe option.
-   *
-   * @param bool $pipe
-   *   The pipe option.
-   */
-  public function setPipe($pipe) {
-    $this->pipe = $pipe;
-  }
-
-  /**
-   * The 'glue' characters used between each line of the returned output.
-   *
-   * @param string $glue
-   *   The glue character.
-   */
-  public function setReturnGlue($glue) {
-    $this->returnGlue = (string) $glue;
-  }
-
-  /**
-   * The name of a Phing property to assign the Drush command's output to.
-   *
-   * @param string $property
-   *   The property's name.
-   */
-  public function setReturnProperty($property) {
-    $this->returnProperty = $property;
-  }
-
-  /**
-   * Should the task fail on Drush error (non zero exit code).
-   *
-   * @param string $haltOnError
-   *   The value of the Halt On Error option.
-   */
-  public function setHaltOnError($haltOnError) {
-    $this->haltOnError = $haltOnError;
-  }
-  /**
-   * Display extra information about the command.
-   *
-   * @param bool $verbose
-   *   The verbose option.
-   */
-  public function setVerbose($verbose) {
-    $this->verbose = $verbose;
+  public function __construct() {
+    parent::__construct();
+    $this->setExecutable($this->bin);
   }
 
   /**
@@ -255,43 +140,301 @@ class Task extends \Task {
   }
 
   /**
-   * Set the path to an additional config file to load.
-   *
-   * @param PhingFile $config
-   *   The path to the additional config file to load.
-   */
-  public function setConfig(PhingFile $config) {
-    $this->config = $config;
-  }
-
-  /**
    * Set the list of paths where drush will search for alias files.
    *
    * @param string $aliasPath
    *   The list of paths.
    */
   public function setAliasPath($aliasPath) {
-    $this->aliasPath = $aliasPath;
+    $this->createOption()
+      ->setName('aliaspath')
+      ->addText($aliasPath);
+  }
+
+  /**
+   * Set the assume option. 'yes' or 'no' to all prompts.
+   *
+   * @param bool $yesNo
+   *   The assume option.
+   */
+  public function setAssume($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('yes');
+    }
+    else {
+      $this->createOption()->setName('no');
+    }
+  }
+
+  /**
+   * Hide all output and return structured data.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setBackend($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('backend');
+    }
+  }
+
+  /**
+   * Specifies the directory where drush will store backups.
+   *
+   * @param \PhingFile $directory
+   *   The directory.
+   */
+  public function setBackupLocation(PhingFile $directory) {
+    $this->createOption()
+      ->setName('backup-location')
+      ->addText($directory->getAbsolutePath());
+  }
+
+  /**
+   * Path the Drush executable.
+   *
+   * @param string $bin
+   *   The path to the Drush executable.
+   */
+  public function setBin($bin) {
+    $this->bin = new PhingFile($bin);
+    $this->setExecutable($this->bin);
   }
 
   /**
    * Whether or not to use color output.
    *
-   * @param bool $color
+   * @param bool $yesNo
    *   The color option.
    */
-  public function setColor($color) {
-    $this->color = $color;
+  public function setColor($yesNo) {
+    if (!$yesNo) {
+      $this->createOption()
+        ->setName('nocolor');
+    }
   }
 
   /**
-   * Specify the working directory for executing this command.
+   * Set the path to an additional config file to load.
    *
-   * @param PhingFile $dir
-   *   Working directory.
+   * @param PhingFile $config
+   *   The path to the additional config file to load.
    */
-  public function setDir(PhingFile $dir) {
-    $this->dir = $dir;
+  public function setConfig(PhingFile $config) {
+    $this->createOption()
+      ->setName('config')
+      ->addText($config->getAbsolutePath());
+  }
+
+  /**
+   * The Drush command to run.
+   *
+   * @param string $command
+   *   The Drush command's name.
+   */
+  public function setCommand($command) {
+    $this->createParam()->addText($command);
+  }
+
+  /**
+   * Display even more information, including internal messages.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setDebug($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('debug');
+    }
+  }
+
+  /**
+   * Shows the Druplicon as glorious ASCII art.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setDruplicon($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('druplicon');
+    }
+  }
+
+  /**
+   * Controls error handling of recoverable errors.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setHaltOnError($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('halt-on-error')
+        ->addText(\StringHelper::booleanValue($yesNo));
+    }
+  }
+
+  /**
+   * Suppress non-error messages.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setQuiet($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('quiet');
+    }
+  }
+
+  /**
+   * Drupal root directory to use.
+   *
+   * @param PhingFile $root
+   *   The Drupal's root directory to use.
+   */
+  public function setRoot(PhingFile $root) {
+    $this->createOption()
+      ->setName('root')
+      ->addText($root);
+  }
+
+  /**
+   * Show all functions names called for the current command.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setShowInvoke($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('show-invoke')
+        ->addText(\StringHelper::booleanValue($yesNo));
+    }
+  }
+
+  /**
+   * Show database passwords in commands that display connection information.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setShowPasswords($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('show-passwords');
+    }
+  }
+
+  /**
+   * Set the the pipe option.
+   *
+   * @param bool $pipe
+   *   The pipe option.
+   */
+  public function setPipe($pipe) {
+    $this->createOption()
+      ->setName('pipe')
+      ->addText($pipe);
+  }
+
+  /**
+   * This is not a real drush option. It's just used for tests.
+   *
+   * Display the command that would be runned only.
+   *
+   * @param bool $yesNo
+   *   The pretend option.
+   */
+  public function setPretend($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('pretend');
+    }
+  }
+
+  /**
+   * Set the simulate option.
+   *
+   * @param bool $yesNo
+   *   The simulate option.
+   */
+  public function setSimulate($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('simulate');
+    }
+  }
+
+  /**
+   * URI of the Drupal to use.
+   *
+   * @param string $uri
+   *   The URI of the Drupal site to use.
+   */
+  public function setUri($uri) {
+    $this->createOption()
+      ->setName('uri')
+      ->addText($uri);
+  }
+
+  /**
+   * Specify a user to login with. May be a name or a number.
+   *
+   * @param string $user
+   *   The user name.
+   */
+  public function setUser($user) {
+    $this->createOption()
+      ->setName('user')
+      ->addText($user);
+  }
+
+  /**
+   * Return an error on unrecognized options.
+   *
+   * @param int $strict
+   *   The strict level.
+   */
+  public function setStrict($strict) {
+    $this->createOption()
+      ->setName('strict')
+      ->addText($strict);
+  }
+
+  /**
+   * Display extra information about the command.
+   *
+   * @param bool $yesNo
+   *   The verbose option.
+   */
+  public function setVerbose($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('verbose');
+    }
+  }
+
+  /**
+   * Show drush version.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setVersion($yesNo) {
+    if ($yesNo) {
+      $this->createOption()->setName('version');
+    }
+  }
+
+  /**
+   * Enable profiling via XHProf.
+   *
+   * @param bool $yesNo
+   *   The value.
+   */
+  public function setXdebug($yesNo) {
+    if ($yesNo) {
+      $this->createOption()
+        ->setName('xh');
+    }
   }
 
   /**
@@ -300,23 +443,22 @@ class Task extends \Task {
   public function init() {
     // Get default properties from project.
     $properties_mapping = array(
-      'alias' => 'drush.alias',
-      'aliasPath' => 'drush.alias-path',
-      'assume' => 'drush.assume',
-      'bin' => 'drush.bin',
-      'color' => 'drush.color',
-      'config' => 'drush.config',
-      'pipe' => 'drush.pipe',
-      'root' => 'drush.root',
-      'simulate' => 'drush.simulate',
-      'uri' => 'drush.uri',
-      'verbose' => 'drush.verbose',
+      'setAlias' => 'drush.alias',
+      'setAliasPath' => 'drush.alias-path',
+      'setAssume' => 'drush.assume',
+      'setBin' => 'drush.bin',
+      'setColor' => 'drush.color',
+      'setConfig' => 'drush.config',
+      'setPipe' => 'drush.pipe',
+      'setRoot' => 'drush.root',
+      'setSimulate' => 'drush.simulate',
+      'setUri' => 'drush.uri',
+      'setVerbose' => 'drush.verbose',
     );
 
-    foreach ($properties_mapping as $class_property => $drush_property) {
-      if (!empty($this->getProject()->getProperty($drush_property))) {
-        // TODO: We should use a setter here.
-        $this->{$class_property} = $this->getProject()->getProperty($drush_property);
+    foreach ($properties_mapping as $class_method => $drush_property) {
+      if ($property = $this->getProject()->getProperty($drush_property)) {
+        call_user_func(array($this, $class_method), $property);
       }
     }
   }
@@ -347,129 +489,131 @@ class Task extends \Task {
    * The main entry point method.
    */
   public function main() {
-    $command = array();
-
-    /**
+    /*
      * The Drush binary command.
      */
-    $command[] = $this->bin->getAbsolutePath();
+    if ($this->bin instanceof PhingFile) {
+      $this->setBin($this->bin);
+    }
+    $this->commandline->setExecutable($this->bin);
 
-    /**
+    /*
      * The site alias.
      */
     if ($this->alias) {
-      $command[] = $this->alias;
+      $this->commandline->addArguments((array) $this->alias);
     }
 
-    /**
-     * The options
+    /*
+     * The options.
      */
-    if (!$this->color) {
-      $option = new Option();
-      $option->setName('nocolor');
-      $this->options[] = $option;
-    }
+    $options = array();
 
-    if ($this->root) {
-      $option = new Option();
-      $option->setName('root');
-      $option->addText($this->root);
-      $this->options[] = $option;
-    }
-
-    if ($this->uri) {
-      $option = new Option();
-      $option->setName('uri');
-      $option->addText($this->uri->getAbsolutePath());
-      $this->options[] = $option;
-    }
-
-    if ($this->config) {
-      $option = new Option();
-      $option->setName('config');
-      $option->addText($this->config);
-      $this->options[] = $option;
-    }
-
-    if ($this->aliasPath) {
-      $option = new Option();
-      $option->setName('alias-path');
-      $option->addText($this->aliasPath);
-      $this->options[] = $option;
-    }
-
-    if ($this->assume) {
-      $option = new Option();
-      $option->setName(($this->assume ? 'yes' : 'no'));
-      $this->options[] = $option;
-    }
-
-    if ($this->simulate) {
-      $option = new Option();
-      $option->setName('simulate');
-      $this->options[] = $option;
-    }
-
-    if ($this->pipe) {
-      $option = new Option();
-      $option->setName('pipe');
-      $this->options[] = $option;
-    }
-
-    if ($this->verbose) {
-      $option = new Option();
-      $option->setName('verbose');
-      $this->options[] = $option;
+    // This has been specifically made for tests.
+    // If the pretend option has been found, just display the drush command
+    // but never execute it.
+    $pretend = NULL;
+    if ($pretend = $this->optionExists('pretend')) {
+      $this->setLogoutput(FALSE);
+      $this->setPassthru(FALSE);
+      $this->setCheckreturn(FALSE);
+      $this->optionRemove('pretend');
     }
 
     foreach ($this->options as $option) {
-      $command[] = $option->toString();
+      // Trick to ensure no option duplicates.
+      $options[$option->getName()] = $option->toString();
     }
+    // Sort options alphabetically.
+    asort($options);
+    $this->commandline->addArguments(array_values($options));
 
-    /**
-     * The Drush command to run.
-     */
-    $command[] = $this->command;
-
-    /**
+    /*
      * The parameters.
      */
+    $params = array();
     foreach ($this->params as $param) {
-      $command[] = $param->toString();
+      $params[] = $param->toString();
+    }
+    $this->commandline->addArguments($params);
+
+    $this->buildCommand();
+    $this->log('Executing command: ' . $this->realCommand);
+
+    if (!$pretend) {
+      parent::main();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildCommand() {
+    $this->realCommand = implode(' ', $this->commandline->getCommandline());
+
+    if ($this->error !== NULL) {
+      $this->realCommand .= ' 2> ' . escapeshellarg($this->error->getPath());
+      $this->log(
+        "Writing error output to: " . $this->error->getPath(),
+        $this->logLevel
+      );
     }
 
-    $command = implode(' ', $command);
-
-    if ($this->dir !== NULL) {
-      $currdir = getcwd();
-      @chdir($this->dir->getPath());
+    if ($this->output !== NULL) {
+      $this->realCommand .= ' 1> ' . escapeshellarg($this->output->getPath());
+      $this->log(
+        "Writing standard output to: " . $this->output->getPath(),
+        $this->logLevel
+      );
+    }
+    elseif ($this->spawn) {
+      $this->realCommand .= ' 1>/dev/null';
+      $this->log("Sending output to /dev/null", $this->logLevel);
     }
 
-    // Execute Drush.
-    $this->log("Executing: " . $command);
-    $output = array();
-    exec($command, $output, $return);
-
-    if (isset($currdir)) {
-      @chdir($currdir);
+    // If neither output nor error are being written to file
+    // then we'll redirect error to stdout so that we can dump
+    // it to screen below.
+    if ($this->output === NULL && $this->error === NULL && $this->passthru === FALSE) {
+      $this->realCommand .= ' 2>&1';
     }
 
-    // Collect Drush output for display through Phing's log.
-    foreach ($output as $line) {
-      $this->log($line);
+    // We ignore the spawn boolean for windows.
+    if ($this->spawn) {
+      $this->realCommand .= ' &';
     }
+  }
 
-    // Set value of the 'pipe' property.
-    if (!empty($this->returnProperty)) {
-      $this->getProject()->setProperty($this->returnProperty, implode($this->returnGlue, $output));
-    }
+  /**
+   * Check if an option exists.
+   *
+   * @param string $optionName
+   *   The option name.
+   *
+   * @return array|\Phing\Drush\Option[]
+   *   The option if exists, an empty array otherwise.
+   */
+  private function optionExists($optionName) {
+    return array_filter($this->options, function ($option) use ($optionName) {
+      return $option->getName() == $optionName;
+    });
+  }
 
-    // When build failed.
-    if ($this->haltOnError && $return != 0) {
-      throw new \BuildException("Drush exited with code: " . $return);
-    }
+  /**
+   * Remove an option.
+   *
+   * @param string $optionName
+   *   The option name.
+   *
+   * @return \Phing\Drush\Option[]
+   *   The option array without the option to remove.
+   */
+  private function optionRemove($optionName) {
+    $this->options = array_filter($this->options, function ($option) use ($optionName) {
+      return $option->getName() != $optionName;
+    });
 
-    return $return != 0;
+    return $this->options;
   }
 
 }

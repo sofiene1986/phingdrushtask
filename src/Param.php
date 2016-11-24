@@ -19,14 +19,14 @@ class Param extends \DataType {
    *
    * @var bool
    */
-  protected $escape = TRUE;
+  protected $escape = FALSE;
 
   /**
    * If TRUE, surround the value with quotes. Otherwise not. Default is TRUE.
    *
    * @var bool
    */
-  protected $quote = TRUE;
+  protected $quote = FALSE;
 
   /**
    * Set the escape's param value.
@@ -34,7 +34,7 @@ class Param extends \DataType {
    * @param bool $escape
    *   The escape's param value.
    */
-  public function setEscape($escape = TRUE) {
+  public function setEscape($escape) {
     $this->escape = $escape;
   }
 
@@ -54,7 +54,7 @@ class Param extends \DataType {
    * @param bool $quote
    *   The quote's param value.
    */
-  public function setQuote($quote = TRUE) {
+  public function setQuote($quote) {
     $this->quote = $quote;
   }
 
