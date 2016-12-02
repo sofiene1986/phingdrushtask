@@ -290,10 +290,10 @@ class Task extends \ExecTask {
   /**
    * Drupal root directory to use.
    *
-   * @param PhingFile $root
+   * @param string $root
    *   The Drupal's root directory to use.
    */
-  public function setRoot(PhingFile $root) {
+  public function setRoot($root) {
     $this->createOption()
       ->setName('root')
       ->addText($root);
