@@ -519,13 +519,7 @@ class Task extends \ExecTask {
       $this->setCheckreturn(FALSE);
       $this->optionRemove('pretend');
     }
-
-    foreach ($this->options as $option) {
-      $options[] = $option->toString();
-    }
-    // Sort options alphabetically.
-    asort($options);
-    $this->commandline->addArguments(array_values($options));
+    $this->commandline->addArguments($this->options);
 
     /*
      * The parameters.
