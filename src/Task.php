@@ -521,8 +521,7 @@ class Task extends \ExecTask {
     }
 
     foreach ($this->options as $option) {
-      // Trick to ensure no option duplicates.
-      $options[$option->getName()] = $option->toString();
+      $options[] = $option->toString();
     }
     // Sort options alphabetically.
     asort($options);
