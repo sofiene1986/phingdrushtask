@@ -519,7 +519,11 @@ class Task extends \ExecTask {
       $this->setCheckreturn(FALSE);
       $this->optionRemove('pretend');
     }
-    $this->commandline->addArguments($this->options);
+
+    foreach ($this->options as $option) {
+      $options[] = $option->toString();
+    }
+    $this->commandline->addArguments($options);
 
     /*
      * The parameters.
@@ -542,6 +546,7 @@ class Task extends \ExecTask {
    * {@inheritdoc}
    */
   protected function buildCommand() {
+
     $this->realCommand = implode(' ', $this->commandline->getCommandline());
 
     if ($this->error !== NULL) {
