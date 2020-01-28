@@ -546,7 +546,6 @@ class Task extends \ExecTask {
    * {@inheritdoc}
    */
   protected function buildCommand() {
-
     $this->realCommand = implode(' ', $this->commandline->getCommandline());
 
     if ($this->error !== NULL) {
